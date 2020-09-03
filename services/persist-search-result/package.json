@@ -1,0 +1,23 @@
+{
+  "name": "search-result-persister",
+  "version": "1.0.0",
+  "description": "Persist data from user searches",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./task lint",
+    "sort-package-json": "./task sort-package-json",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 serverless offline",
+    "test": "./task test"
+  },
+  "dependencies": {
+    "aws-xray-sdk": "2.3.6"
+  },
+  "devDependencies": {
+    "aws-sdk": "2.540.0",
+    "serverless-offline": "5.12.0",
+    "serverless-plugin-typescript": "1.1.9",
+    "serverless-prune-plugin": "1.4.1"
+  }
+}

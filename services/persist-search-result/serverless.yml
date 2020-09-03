@@ -1,0 +1,37 @@
+service: search-result-persister
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-west-1
+  stage: test
+  timeout: 30
+  environment:
+      dynamoTable: "SearchEvents"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+        - "sqs:GetQueueUrl"
+        - "sqs:ListQueues"
+      Resource: ${ssm:/sqs/searchEvents/arn}
+    - Effect: "Allow"
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - ${ssm:/dynamodb/searchEventsTable/arn}
+functions:
+  sqsToDynamo:
+    handler: src/persisterHandler.sqsToDynamo
+    events:
+      - sqs: ${ssm:/sqs/searchEvents/arn}
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-prune-plugin

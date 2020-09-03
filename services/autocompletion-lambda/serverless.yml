@@ -1,0 +1,69 @@
+service: autocompletion-api-lambda
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-west-1
+  tracing: true
+  iamRoleStatements: # permissions for all of your functions can be set here
+    - Effect: Allow # xray permissions (required)
+      Action:
+        - xray:PutTraceSegments
+        - xray:PutTelemetryRecords
+      Resource:
+        - '*'
+    - Effect: Allow
+      Action:
+        - es:ESHttpPost
+        - es:ESHttpGet
+        - es:ESHttpHead
+      Resource: '*'
+
+functions:
+  get:
+    handler: src/autoCompletions.getAutoCompletions
+    environment:
+      searchIndex: ${ssm:/elasticsearch/searchEvents/index}
+      ESDomain: ${ssm:/ESDomain}
+    events:
+      - http:
+          path: /autocomplete
+          method: get
+          authorizer: aws_iam
+          documentation:
+            summary: 'Search autocompletions suggestions'
+            description: 'Searches from user searches that have returned results.'
+            queryParams:
+              - name: storeId
+                description: >
+                  Mandatory store ID.
+              - name: queryString
+                description: >
+                  This is the main query string.
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: List of possible search strings
+custom:
+  serverless-offline:
+    port: 4005
+  apiPath:
+    production: ${self:service}.test.fi
+    other: ${self:service}.${opt:stage, self:provider.stage}.test.fi
+  documentation:
+    info:
+      title: 'Autocompletion API'
+      description: >
+        Search searches from elasticsearch.
+
+    resources:
+      - path: '/autocomplete'
+        description: >
+          Fetches searches which have returned results
+plugins:
+  - serverless-plugin-typescript
+  - serverless-plugin-tracing
+  - serverless-offline
+  - serverless-prune-plugin
+  - serverless-aws-documentation
+#  - serverless-domain-manager

@@ -1,0 +1,31 @@
+{
+  "name": "autocompletion-api-lambda",
+  "version": "1.0.0",
+  "description": "Lambda to fetch autocomplete suggestions from ES",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./task lint",
+    "sort-package-json": "./task sort-package-json",
+    "start": "serverless offline",
+    "test": "./task test"
+  },
+  "dependencies": {
+    "aws-xray-sdk": "2.4.0",
+    "elasticsearch": "16.4.0",
+    "http-aws-es": "6.0.0",
+    "ramda": "0.26.1"
+  },
+  "devDependencies": {
+    "@types/elasticsearch": "5.0.35",
+    "@types/http-aws-es": "6.0.0",
+    "@types/ramda": "0.26.33",
+    "aws-sdk": "2.559.0",
+    "serverless-aws-documentation": "^1.1.0",
+    "serverless-offline": "5.12.0",
+    "serverless-plugin-tracing": "2.0.0",
+    "serverless-plugin-typescript": "1.1.9",
+    "serverless-prune-plugin": "1.4.1"
+  }
+}

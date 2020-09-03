@@ -1,0 +1,17 @@
+# Editor: Vim
+*.sw[op]
+
+# Editor: VSCode
+/.vscode/
+
+# Editor: IntellijIdea
+/.idea
+
+# Node.js
+node_modules/
+.npm/
+.serverless/
+lerna-debug.log
+
+# Build
+.build/
